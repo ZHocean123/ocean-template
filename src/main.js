@@ -8,8 +8,10 @@ import router from './router';
 import './assets/styles/base.css';
 import './assets/font/iconfont.css';
 import store from './store';
+import axios from './utils/axios';
 
 Vue.use(ElementUI);
+Vue.use(axios);
 
 Vue.config.productionTip = false;
 

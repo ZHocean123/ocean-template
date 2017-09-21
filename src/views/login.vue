@@ -51,8 +51,9 @@ export default {
       this.login(this.ruleForm)
         .then(() => {
           this.loading = false;
-          if (this.$route.query.back) {
-            this.$router.replace(this.$route.query.back);
+          const { back } = this.$route.query;
+          if (back) {
+            this.$router.replace(back);
           } else {
             this.$router.replace('/');
           }

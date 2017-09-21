@@ -49,14 +49,15 @@ export default {
 <style lang="less">
 .app-levelbar {
   background: #fff;
-  height: 30px;
+  height: 40px;
   border-bottom: 1px solid #dedede;
   .breadcrumb {
-    line-height: 30px;
+    line-height: 40px;
     padding-right: 20px;
   }
   .router-name {
-    padding: 8px 12px;
+    line-height: 40px;
+    padding: 0px 12px;
   }
 }
 </style>

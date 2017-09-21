@@ -2,9 +2,10 @@ import axios from 'axios';
 import Vue from 'vue';
 import NProgress from 'nprogress';
 import store from '../store';
+import API from '../api';
 
 const http = axios.create({
-  baseURL: '',
+  baseURL: API.ROOT,
   header: {
     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
   },
@@ -12,8 +13,8 @@ const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
+  NProgress.start();
   if (config.appendToken === false) {
-    NProgress.start();
     return config;
   }
   const { token } = store.state.user;
@@ -35,9 +36,30 @@ http.interceptors.request.use((config) => {
   } else {
     config.data = `session=${token}`;
   }
-  NProgress.start();
   return config;
 });
+
+http.interceptors.response.use(
+  (res) => {
+    NProgress.done();
+    const { data } = res;
+    if (!data || data.state !== 'success') {
+      return Promise().reject(Error('error'));
+    }
+    return data;
+  },
+  (error) => {
+    NProgress.done();
+    if (error.response) {
+      console.error('Response: ', error.response.data);
+      console.error('Status: ', error.response.status);
+      console.error('Headers: ', error.response.headers);
+    } else {
+      console.error('Error: ', error.message);
+    }
+    return Promise().reject(error);
+  },
+);
 
 export default {
   install() {
